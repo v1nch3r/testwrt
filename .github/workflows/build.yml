@@ -6,6 +6,7 @@ on:
 env:
   REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
   REPO_BRANCH: v21.02.5
+  CONFIG_FILE: config-openwrt/v21.02.5/.config
 
 jobs:
   build:
@@ -20,6 +21,11 @@ jobs:
         run: |
           git clone ${REPO_URL} -b ${REPO_BRANCH}
           ls -a
+      
+      - name: Load custom configuration
+        run: |
+          cp -f ${CONFIG_FILE} openwrt/
+          cat openwrt/.config
       
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
