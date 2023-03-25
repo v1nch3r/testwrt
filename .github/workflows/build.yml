@@ -18,7 +18,7 @@ jobs:
 
       - name: Clone source code
         run: |
-          git clone ${REPO_URL} -b $REPO_BRANCH}
+          git clone ${REPO_URL} -b ${REPO_BRANCH}
           ls -a
       
       - name: Upload OpenWrt Firmware to Release
