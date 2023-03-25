@@ -27,7 +27,7 @@ jobs:
           cp -f ${CONFIG_FILE} openwrt/
           
       - name: Update feefs
-        run: run: cd openwrt/ && ./scripts/feeds install -a
+        run: cd openwrt/ && ./scripts/feeds install -a
       
       - name: Install feeds
         run: cd openwrt/ && ./scripts/feeds install -a
