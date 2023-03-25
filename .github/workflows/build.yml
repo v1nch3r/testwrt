@@ -25,7 +25,18 @@ jobs:
       - name: Load custom configuration
         run: |
           cp -f ${CONFIG_FILE} openwrt/
-          cat openwrt/.config
+          
+      - name: Update feefs
+        run: run: cd openwrt/ && ./scripts/feeds install -a
+      
+      - name: Install feeds
+        run: cd openwrt/ && ./scripts/feeds install -a
+        
+      - name: Download package
+        run: |
+          cd openwrt/
+          make defconfig
+          make download          
       
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
