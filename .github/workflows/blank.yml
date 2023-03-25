@@ -1,0 +1,31 @@
+name: Openwrt-Armvirt
+
+on:
+  workflow_dispatch:
+
+env:
+  REPO_URL: https://git.openwrt.org/openwrt/openwrt.git
+  REPO_BRANCH: v21.02.5
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Clone source code
+        run: |
+          git clone ${REPO_URL} -b $REPO_BRANCH}
+          ls -a
+      
+      - name: Upload OpenWrt Firmware to Release
+        uses: ncipollo/release-action@main
+        if: ${{ env.PACKAGED_STATUS }} == 'success' && !cancelled()
+        with:
+          tag: Openwrt-Armvirt
+          artifacts: "*.img.gz"
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
