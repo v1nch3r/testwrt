@@ -40,7 +40,7 @@ jobs:
       - name: Compile the firmware
         run: |
           cd openwrt/
-          make -j $(nproc) V=sc
+          make -j $(nproc) V=s
       
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
