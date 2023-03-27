@@ -23,7 +23,8 @@ jobs:
       
       - name: Load custom configuration
         run: |
-          cp -f ${CONFIG_FILE} openwrt/
+          cp -f ${CONFIG_FILE} openwrt/.config
+          cat openwrt/.config
           
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
