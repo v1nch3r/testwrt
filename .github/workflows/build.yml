@@ -35,13 +35,12 @@ jobs:
         run: |
           cd openwrt/
           make defconfig
-          cat .config
-          make download -j $(nproc)          
+          make download -j$(nproc) V=w       
        
       - name: Compile the firmware
         run: |
           cd openwrt/
-          make -j $(nproc) V=w
+          make -j$(nproc) V=w
       
       - name: Upload OpenWrt Firmware to Release
         uses: ncipollo/release-action@main
