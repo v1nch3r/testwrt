@@ -10,30 +10,13 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     if: ${{ github.event.repository.owner.id }} == ${{ github.event.sender.id }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         
-      - name: Initialization environment
-        id: init
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-          docker rmi `docker images -q`
-          [[ -n "${AGENT_TOOLSDIRECTORY}" ]] && sudo rm -rf "${AGENT_TOOLSDIRECTORY}"
-          sudo rm -rf /usr/share/dotnet /etc/apt/sources.list.d /usr/local/lib/android 2>/dev/null
-          sudo -E apt-get -y update
-          sudo -E apt-get -y purge azure-cli ghc* zulu* llvm* firefox google* dotnet* powershell openjdk* mongodb* moby* || true
-          sudo -E apt-get -y install $(curl -fsSL https://is.gd/depend_ubuntu2204_openwrt)
-          sudo -E systemctl daemon-reload
-          #sudo -E apt-get -y full-upgrade
-          sudo -E apt-get -y autoremove --purge
-          sudo -E apt-get clean
-          echo "status=success" >> ${GITHUB_OUTPUT}
-
       - name: Clone source code
         run: |
           git clone ${REPO_URL} -b ${REPO_BRANCH}
@@ -41,7 +24,6 @@ jobs:
       - name: Load custom configuration
         run: |
           cp -f ${CONFIG_FILE} openwrt/.config
-          cat openwrt/.config
           
       - name: Update feeds
         run: cd openwrt/ && ./scripts/feeds update -a
@@ -53,6 +35,7 @@ jobs:
         run: |
           cd openwrt/
           make defconfig
+          cat .config
           make download -j $(nproc)          
        
       - name: Compile the firmware
